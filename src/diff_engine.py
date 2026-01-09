@@ -24,10 +24,12 @@ def compare_snapshots(old, new):
 
     for a in added:
         torneo = json.loads(a)
-        changes.append(f"Nuovo torneo rilevato: {torneo.get('nome', 'Sconosciuto')}")
+        nome = torneo.get("nome_torneo") or torneo.get("nome") or "Sconosciuto"
+        changes.append(f"Nuovo torneo rilevato: {nome}")
 
     for r in removed:
         torneo = json.loads(r)
-        changes.append(f"Torneo rimosso: {torneo.get('nome', 'Sconosciuto')}")
+        nome = torneo.get("nome_torneo") or torneo.get("nome") or "Sconosciuto"
+        changes.append(f"Torneo rimosso: {nome}")
 
     return changes
