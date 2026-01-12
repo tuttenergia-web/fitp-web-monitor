@@ -37,7 +37,7 @@ def monitor_loop():
             else:
                 print(f"{ts()}  [monitor] Nessun nuovo torneo.")
 
-            # --- LOG DEI TORNEI RIMOSSI (solo console, nessuna notifica) ---
+            # --- LOG DEI TORNEI RIMOSSI (solo console) ---
             if hasattr(main, "detect_removed_tournaments"):
                 rimossi = main.detect_removed_tournaments(tornei)
                 if rimossi:
@@ -48,4 +48,20 @@ def monitor_loop():
                     print(f"{ts()}  [monitor] Nessun torneo eliminato.")
 
         except Exception as e:
-            print
+            print(f"{ts()}  [monitor] ERRORE nel polling: {e}")
+
+        time.sleep(30)
+
+
+def start_monitor():
+    monitor_loop()
+
+
+# 🔥 Render NON esegue il file come __main__, quindi Flask va avviato SEMPRE
+# Avvio del monitor PRIMA del server Flask
+monitor_thread = threading.Thread(target=start_monitor)
+monitor_thread.daemon = True
+monitor_thread.start()
+
+# Avvio del server Flask (processo principale che deve restare attivo)
+app.run(host="0.0.0.0", port=10000)
