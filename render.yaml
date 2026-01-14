@@ -7,4 +7,3 @@ services:
     startCommand: python src/main.py
     envVars:
       NODE_VERSION: 20
-      PYTHON_VERSION: 3.12.3
